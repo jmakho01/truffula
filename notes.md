@@ -5,6 +5,10 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 
 ## App.java
 
+- the main program that runs everything else
+- explains how to use the program, arguments, and examples
+- needs to implement TruffulaOptions object, pass into TruffulaPrinter, then call printTree on it
+
 ## ConsoleColor.java
 
 ## ColorPrinter.java / ColorPrinterTest.java
