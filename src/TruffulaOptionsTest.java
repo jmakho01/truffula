@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -25,5 +26,54 @@ public class TruffulaOptionsTest {
     assertEquals(directory.getAbsolutePath(), options.getRoot().getAbsolutePath());
     assertTrue(options.isShowHidden());
     assertFalse(options.isUseColor());
+  }
+
+  @Test
+  void testValidDirectoryNoFlags(@TempDir File tempDir) throws FileNotFoundException {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {directoryPath};
+
+    TruffulaOptions options = new TruffulaOptions(args);
+
+    assertFalse(options.isShowHidden());
+    assertTrue(options.isUseColor());
+  }
+
+  @Test
+  void testInvalidDirectory1(@TempDir File tempDir) {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String[] args = {};
+
+    assertThrows(IllegalArgumentException.class, () -> { new TruffulaOptions(args); });
+  }
+
+  @Test
+  void testInvalidDirectory2(@TempDir File tempDir) {
+    File directory = new File(tempDir, "subfolder");
+    directory.mkdir();
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-n", "-h", directoryPath};
+
+    assertThrows(IllegalArgumentException.class, () -> { new TruffulaOptions(args); });
+  }
+
+  @Test
+  void testFileNotFoundException1() throws FileNotFoundException {
+    String directoryPath = "notapath";
+    String[] args = {"-nc", "-h", directoryPath};
+
+    assertThrows(FileNotFoundException.class, () -> { new TruffulaOptions(args); });
+  }
+
+  @Test
+  void testFileNotFoundException2(@TempDir File tempDir) throws FileNotFoundException {
+    File directory = new File(tempDir, "subfolder.txt");
+    String directoryPath = directory.getAbsolutePath();
+    String[] args = {"-nc", "-h", directoryPath};
+
+    assertThrows(FileNotFoundException.class, () -> { new TruffulaOptions(args); });
   }
 }
