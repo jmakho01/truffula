@@ -34,3 +34,7 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 - Test file has tests that check which OS is running, creating hidden files, and printing trees
 
 ## AlphabeticalFileSorter.java
+
+- Class that is used to sort an array of files alphabetically by name
+- Uses lambdas to sort the arrays without worrying about case differences
+- Is needed for Wave 6 in TruffulaPrinter.java
