@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -103,7 +104,6 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // TODO: Implement this!
     // REQUIRED: ONLY use java.io, DO NOT use java.nio
     
     // Hints:
@@ -112,7 +112,22 @@ public class TruffulaPrinter {
     // DO NOT USE SYSTEM.OUT.PRINTLN
     // USE out.println instead (will use your ColorPrinter)
 
-    out.println("printTree was called!");
-    out.println("My options are: " + options);
+    //previous commands for testing purposes
+    //out.println("printTree was called!");
+    //out.println("My options are: " + options);
+
+    printTreeHelper(options.getRoot(), 0);
+  }
+
+  private void printTreeHelper(File directory, int depth) {
+    String indent = "";
+    for(int i = 0; i < depth; i++) { indent += "   "; } 
+    if(directory.isDirectory()){ 
+      out.println(indent + directory.getName() + "/");
+      File[] children = directory.listFiles();
+      if(children != null) {
+        for(File child : children) { printTreeHelper(child, depth + 1); }
+        } 
+      } else { out.println(indent + directory.getName()); }
   }
 }

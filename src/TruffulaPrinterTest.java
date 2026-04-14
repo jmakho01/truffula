@@ -149,4 +149,102 @@ public class TruffulaPrinterTest {
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
     }
+
+    @Test
+    public void testPrintTree_BasicOutput(@TempDir File tempDir) throws IOException {
+        File theFolder = new File(tempDir, "testFolder");
+        assertTrue(theFolder.mkdir());
+
+        File test1 = new File(theFolder, "test1.txt");
+        File test2 = new File(theFolder, "test2.txt");
+        test1.createNewFile();
+        test2.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(theFolder, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString().replaceAll("\u001B\\[[0-9;]*m", "");
+        String nl = System.lineSeparator();
+
+        StringBuilder expected = new StringBuilder();
+        expected.append("testFolder/").append(nl);
+        expected.append("   test1.txt").append(nl);
+        expected.append("   test2.txt").append(nl);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_NestedOutput(@TempDir File tempDir) throws IOException {
+        File theFolder = new File(tempDir, "testFolder");
+        assertTrue(theFolder.mkdir());
+
+        File subFolder = new File(theFolder, "subFolder");
+        assertTrue(subFolder.mkdir());
+
+        File subtest1 = new File(subFolder, "subtest1.txt");
+        File subtest2 = new File(subFolder, "subtest2.txt");
+        subtest1.createNewFile();
+        subtest2.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(theFolder, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString().replaceAll("\u001B\\[[0-9;]*m", "");
+        String nl = System.lineSeparator();
+
+        StringBuilder expected = new StringBuilder();
+        expected.append("testFolder/").append(nl);
+        expected.append("   subFolder/").append(nl);
+        expected.append("      subtest1.txt").append(nl);
+        expected.append("      subtest2.txt").append(nl);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_SourceOutput() throws IOException {
+        File sourceFolder = new File("./src");
+
+        TruffulaOptions options = new TruffulaOptions(sourceFolder, false, false);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString().replaceAll("\u001B\\[[0-9;]*m", "");
+        String nl = System.lineSeparator();
+
+        StringBuilder expected = new StringBuilder();
+        expected.append("src/").append(nl);
+        expected.append("   AlphabeticalFileSorter.java").append(nl);
+        expected.append("   App.java").append(nl);
+        expected.append("   ColorPrinter.java").append(nl);
+        expected.append("   ColorPrinterTest.java").append(nl);
+        expected.append("   ConsoleColor.java").append(nl);
+        expected.append("   TruffulaOptions.java").append(nl);
+        expected.append("   TruffulaOptionsTest.java").append(nl);
+        expected.append("   TruffulaPrinter.java").append(nl);
+        expected.append("   TruffulaPrinterTest.java").append(nl);
+
+        // Assert that the output matches the expected output exactly
+        assertEquals(expected.toString(), output);
+    }
 }
