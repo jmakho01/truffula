@@ -11,6 +11,9 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 
 ## ConsoleColor.java
 
+- Class composed of enums that represent ANSI escape codes for various text colors on the console
+- The code is constructed and returned as a String to be used in the console
+
 ## ColorPrinter.java / ColorPrinterTest.java
 
 ## TruffulaOptions.java / TruffulaOptionsTest.java
