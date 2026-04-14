@@ -16,6 +16,10 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 
 ## ColorPrinter.java / ColorPrinterTest.java
 
+- Class used in conjunction with ColorConsole to print colored text to the console
+- Need to implement print(String message, boolean reset) method
+- Test file shows example of how ColorPrinter works
+
 ## TruffulaOptions.java / TruffulaOptionsTest.java
 
 ## TruffulaPrinter.java / TruffulaPrinterTest.java
