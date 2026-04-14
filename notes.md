@@ -22,6 +22,11 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 
 ## TruffulaOptions.java / TruffulaOptionsTest.java
 
+- Program that defines configuration options in displaying directory trees, used in App.java
+- Shows argument flags, examples of usage, and error exceptions 
+- Need to implement TruffulaOptions(String[] args) method
+- Test file shows example of how TruffulaOptions works
+
 ## TruffulaPrinter.java / TruffulaPrinterTest.java
 
 ## AlphabeticalFileSorter.java
