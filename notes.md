@@ -29,4 +29,8 @@ PLEASE MAKE FREQUENT COMMITS AS YOU FILL OUT THIS FILE.
 
 ## TruffulaPrinter.java / TruffulaPrinterTest.java
 
+- Program that is responisble for printing the directory tree itself
+- Need to implement printTree() method (multiple waves for this method!)
+- Test file has tests that check which OS is running, creating hidden files, and printing trees
+
 ## AlphabeticalFileSorter.java
