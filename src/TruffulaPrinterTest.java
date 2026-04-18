@@ -370,4 +370,43 @@ public class TruffulaPrinterTest {
         assertTrue(output.contains(ConsoleColor.WHITE + "      level2Folder/"));
         assertTrue(output.contains(ConsoleColor.WHITE + "         level3file.txt"));
     }
+
+    @Test
+    public void testPrintTree_SortedOutput(@TempDir File tempDir) throws IOException {
+        File segaFolder = new File(tempDir, "segaFolder");
+        segaFolder.mkdir();
+
+        File md = new File(segaFolder, "Genesis.txt");
+        File sat = new File(segaFolder, "Saturn.txt");
+        File dc = new File(segaFolder, "Dreamcast.txt");
+        md.createNewFile();
+        sat.createNewFile();
+        dc.createNewFile();
+
+        createHiddenFile(segaFolder, ".hidden.txt");
+
+        TruffulaOptions options = new TruffulaOptions(segaFolder, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+        String nl = System.lineSeparator();
+
+        ConsoleColor reset = ConsoleColor.RESET;
+        ConsoleColor white = ConsoleColor.WHITE;
+        ConsoleColor purple = ConsoleColor.PURPLE;
+
+        StringBuilder expected = new StringBuilder();
+        expected.append(white).append("segaFolder/").append(nl).append(reset);
+        expected.append(purple).append("   Dreamcast.txt").append(nl).append(reset);
+        expected.append(purple).append("   Genesis.txt").append(nl).append(reset);
+        expected.append(purple).append("   Saturn.txt").append(nl).append(reset);
+
+        assertEquals(expected.toString(), output);
+    }
 }
