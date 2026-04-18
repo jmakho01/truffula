@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TruffulaPrinterTest {
@@ -246,5 +247,55 @@ public class TruffulaPrinterTest {
 
         // Assert that the output matches the expected output exactly
         assertEquals(expected.toString(), output);
+    }
+
+    @Test
+    public void testPrintTree_HiddenFiles(@TempDir File tempDir) throws IOException {
+        File theFolder = new File(tempDir, "testFolder");
+        assertTrue(theFolder.mkdir());
+
+        File visible = new File(tempDir, "visible.txt");
+        visible.createNewFile();
+
+        File hidden = createHiddenFile(tempDir, ".hidden.txt");
+        hidden.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(tempDir, true, false);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = baos.toString();
+
+        assertTrue(output.contains("visible.txt"));
+        assertTrue(output.contains(".hidden.txt"));
+    }
+
+    @Test
+    public void testPrintTree_NoHiddenFiles(@TempDir File tempDir) throws IOException {
+        File theFolder = new File(tempDir, "testFolder");
+        assertTrue(theFolder.mkdir());
+
+        File visible = new File(tempDir, "visible.txt");
+        visible.createNewFile();
+
+        File hidden = createHiddenFile(tempDir, ".hidden.txt");
+        hidden.createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(tempDir, false, false);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+        String output = baos.toString();
+
+        assertTrue(output.contains("visible.txt"));
+        assertFalse(output.contains(".hidden.txt"));
     }
 }

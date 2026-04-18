@@ -126,7 +126,10 @@ public class TruffulaPrinter {
       out.println(indent + directory.getName() + "/");
       File[] children = directory.listFiles();
       if(children != null) {
-        for(File child : children) { printTreeHelper(child, depth + 1); }
+        for(File child : children) { 
+          if (!options.isShowHidden() && child.isHidden()) { continue; }
+          printTreeHelper(child, depth + 1); 
+          }
         } 
       } else { out.println(indent + directory.getName()); }
   }
