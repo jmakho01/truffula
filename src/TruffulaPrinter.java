@@ -104,14 +104,6 @@ public class TruffulaPrinter {
    *    zebra.txt
    */
   public void printTree() {
-    // REQUIRED: ONLY use java.io, DO NOT use java.nio
-    
-    // Hints:
-    // - Add a recursive helper method
-    // - For Wave 6: Use AlphabeticalFileSorter
-    // DO NOT USE SYSTEM.OUT.PRINTLN
-    // USE out.println instead (will use your ColorPrinter)
-
     //previous commands for testing purposes
     //out.println("printTree was called!");
     //out.println("My options are: " + options);
@@ -123,9 +115,9 @@ public class TruffulaPrinter {
     String indent = "";
     for(int i = 0; i < depth; i++) { indent += "   "; } 
     if(options.isUseColor()) {
-      if(depth % 3 == 1) { out.setCurrentColor(ConsoleColor.PURPLE); }
-      else if (depth % 3 == 2) { out.setCurrentColor(ConsoleColor.YELLOW); }
-      else { out.setCurrentColor(ConsoleColor.WHITE); }
+      if(depth % 3 == 1) { out.setCurrentColor(colorSequence.get(1)); }
+      else if (depth % 3 == 2) { out.setCurrentColor(colorSequence.get(2)); }
+      else { out.setCurrentColor(colorSequence.get(0)); }
     }
     if(directory.isDirectory()){ 
       out.println(indent + directory.getName() + "/");
