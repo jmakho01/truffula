@@ -298,4 +298,76 @@ public class TruffulaPrinterTest {
         assertTrue(output.contains("visible.txt"));
         assertFalse(output.contains(".hidden.txt"));
     }
+
+    @Test
+    void testPrintTree_CycleColor(@TempDir File tempDir) throws IOException {
+        File root = new File(tempDir, "testFolder");
+        root.mkdir();
+
+        new File(root, "level1file.txt").createNewFile();
+
+        File sub = new File(root, "level1Folder");
+        sub.mkdir();
+
+        new File(sub, "level2file.txt").createNewFile();
+
+        File sub2 = new File(sub, "level2Folder");
+        sub2.mkdir();
+
+        new File(sub2, "level3file.txt").createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(root, false, true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+
+        assertTrue(output.contains(ConsoleColor.WHITE + "testFolder/"));
+        assertTrue(output.contains(ConsoleColor.PURPLE + "   level1file.txt"));
+        assertTrue(output.contains(ConsoleColor.PURPLE + "   level1Folder/"));
+        assertTrue(output.contains(ConsoleColor.YELLOW + "      level2file.txt"));
+        assertTrue(output.contains(ConsoleColor.YELLOW + "      level2Folder/"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "         level3file.txt"));
+    }
+
+    @Test
+    void testPrintTree_NoColor(@TempDir File tempDir) throws IOException {
+        File root = new File(tempDir, "testFolder");
+        root.mkdir();
+
+        new File(root, "level1file.txt").createNewFile();
+
+        File sub = new File(root, "level1Folder");
+        sub.mkdir();
+
+        new File(sub, "level2file.txt").createNewFile();
+
+        File sub2 = new File(sub, "level2Folder");
+        sub2.mkdir();
+
+        new File(sub2, "level3file.txt").createNewFile();
+
+        TruffulaOptions options = new TruffulaOptions(root, false, false);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(baos);
+
+        TruffulaPrinter printer = new TruffulaPrinter(options, printStream);
+
+        printer.printTree();
+
+        String output = baos.toString();
+
+        assertTrue(output.contains(ConsoleColor.WHITE + "testFolder/"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "   level1file.txt"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "   level1Folder/"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "      level2file.txt"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "      level2Folder/"));
+        assertTrue(output.contains(ConsoleColor.WHITE + "         level3file.txt"));
+    }
 }
